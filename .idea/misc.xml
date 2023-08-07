@@ -7,10 +7,17 @@
         <option value="$PROJECT_DIR$/server-instance-1/server-instance-1/pom.xml" />
         <option value="$PROJECT_DIR$/spring-api-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/spring-discovery-server/spring-discovery-server/pom.xml" />
+        <option value="$PROJECT_DIR$/server-instance-2/server-instance-2/pom.xml" />
+        <option value="$PROJECT_DIR$/inventory-service/pom.xml" />
+        <option value="$PROJECT_DIR$/service-instance-1/pom.xml" />
+        <option value="$PROJECT_DIR$/service-instance-2/server-instance-2/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-discovery-service/pom.xml" />
+        <option value="$PROJECT_DIR$/service-instance-2/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ProjectType">
