@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class OrderController {
 private final OrderService orderSer;
-    @RequestMapping(value = "/create-order", method = RequestMethod.POST, produces = {
+    @RequestMapping(value = "/", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> createOrder(@RequestBody OrderRequest request){
         log.info("START CREATEPRODUCT");

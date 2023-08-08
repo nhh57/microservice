@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderService {
     private final OrderRepository orderRepo;
-    private final WebClient webClient;
+    private final WebClient.Builder webClient;
 
     public void placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
@@ -44,16 +44,16 @@ public class OrderService {
                 .collect(Collectors.toList());
 //        call inventory service, and place order if product is in
 //        stock
-
-        InventoryResponse[] inventoryResponsesArray = webClient.get()
-                .uri("http://localhost:9003/api/inventory",
+        log.info("skuCodes: "+skuCodes);
+        InventoryResponse[] inventoryResponses = webClient.build().get()
+                .uri("http://server-inventory:9003/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode",skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
                 .block();
 
-        log.info("inventoryResponsesArray: "+ Arrays.toString(inventoryResponsesArray));
-        boolean allProductsInStock = Arrays.stream(inventoryResponsesArray).allMatch(InventoryResponse::isInStock);
+//        log.info("inventoryResponsesArray: "+ Arrays.toString(inventoryResponsesArray));
+        boolean allProductsInStock = Arrays.stream(inventoryResponses).allMatch(InventoryResponse::isInStock);
 
         if (allProductsInStock) {
             orderRepo.save(order);

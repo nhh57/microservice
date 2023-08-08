@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productSer;
 
-    @RequestMapping(value = "/create-product", method = RequestMethod.POST, produces = {
+    @RequestMapping(value = "/a", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> createProduct(@RequestBody ProductRequest request){
         log.info("START CREATEPRODUCT");
@@ -27,7 +27,7 @@ public class ProductController {
         return new ResponseEntity<BaseResponse>(response, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/get-all-product", method = RequestMethod.GET, produces = {
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> getAllProduct(){
         log.info("START GETALLPRODUCT");

@@ -20,8 +20,8 @@ public class InventoryController {
 
     private final InventoryService inventorySer;
 
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BaseResponse> isInStock(@RequestParam List<String> skuCode){
+    @RequestMapping(value = "/is", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<BaseResponse> isInStocks(@RequestParam List<String> skuCode){
         log.info("START isInStock");
         log.info("skuCode: "+skuCode);
         BaseResponse response = new BaseResponse();
@@ -30,6 +30,12 @@ public class InventoryController {
         response.setData(listData);
         log.info("END isInStock");
         return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<InventoryResponse> sisInStock(@RequestParam List<String> skuCode){
+        log.info("skuCode: "+skuCode);
+        return inventorySer.isInStockIn(skuCode);
     }
 
 

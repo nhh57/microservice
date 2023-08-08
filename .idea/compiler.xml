@@ -15,7 +15,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="microservice" target="11" />
       <module name="server-instance-1" target="11" />
       <module name="server-instance-2" target="11" />
       <module name="spring-discovery-server" target="11" />
