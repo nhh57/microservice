@@ -1,1 +1,6 @@
  -Dserver.port=9002 -Dspring.application.name=server-instance-2
+
+ keyloack: docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:22.0.1 start-dev
+
+
+docker run --rm -it --name mysql-container -p 3306:3306 --network todo-app-network --network-alias todo-app-network-alias -e MYSQL_USER=hainh -e MYSQL_PASSWORD=Admin123 -e MYSQL_ROOT_PASSWORD=Admin123 -e MYSQL_DATABASE=testdata -v D:/NGUYENHOANGHAI/Docker/mysql/mysql_8.0.33:/var/lib/mysql mysql:8.0.33
