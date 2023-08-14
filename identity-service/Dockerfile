@@ -1,4 +1,4 @@
 FROM openjdk:11
 EXPOSE 9006
-COPY target/identity-service-0.0.1-SNAPSHOT.jar identity-service.jar
+ADD target/identity-service-0.0.1-SNAPSHOT.jar identity-service-0.0.1-SNAPSHOT.jar
 ENTRYPOINT ["java","-jar","/identity-service-0.0.1-SNAPSHOT.jar"]
