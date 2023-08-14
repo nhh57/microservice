@@ -1,5 +1,102 @@
-#---
-#version: '3.7'
-#services:
-#  ## MySQL Docker Compose Config
-#
+version: '3.8'
+## MYSQL config
+services:
+  mysql-microservice:
+    image: mysql:8.0.33
+    container_name: mysql-microservice
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - mysql-springboot-data:/var/lib/mysql
+    networks:
+      backend:
+    environment:
+      MYSQL_USER: hainh
+      MYSQL_PASSWORD: Admin123
+      MYSQL_ROOT_PASSWORD: Admin123
+      MYSQL_DATABASE: testdata
+
+
+## discovery-service config
+  discovery-service:
+    image: hainh0507/discovery-service:v1.0.0
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    volumes:
+      - ./:/app
+    networks:
+      backend:
+
+## gateway-service config
+  gateway-service:
+    image: hainh0507/gateway-service:v1.0.0
+    container_name: gateway-service
+    ports:
+      - "9004:9004"
+    networks:
+      backend:
+    depends_on:
+      - discovery-service
+
+## identity-service config
+  identity-service:
+    image: hainh0507/identity-service:v1.0.0
+    container_name: identity-service
+    ports:
+      - "9006:9006"
+    networks:
+      backend:
+    depends_on:
+      - mysql-container
+      - discovery-service
+      - gateway-service
+
+## identity-service config
+  inventory-service:
+    image: hainh0507/inventory-service:v1.0.0
+    container_name: inventory-service
+    ports:
+      - "9003:9003"
+    networks:
+      backend:
+    depends_on:
+      - mysql-container
+      - discovery-service
+      - gateway-service
+
+## product-service config
+  product-service:
+    image: hainh0507/product-service:v1.0.0
+    container_name: product-service
+    ports:
+      - "9001:9001"
+    networks:
+      backend:
+    depends_on:
+      - mysql-container
+      - discovery-service
+      - gateway-service
+
+## order-service config
+  order-service:
+    image: hainh0507/order-service:v1.0.0
+    container_name: order-service
+    ports:
+      - "9002:9002"
+    networks:
+      backend:
+    depends_on:
+      - mysql-container
+      - discovery-service
+      - gateway-service
+
+## create network
+networks:
+  backend:
+    name: springboot-app-network
+
+## create volumes
+volumes:
+  mysql-springboot-data:
