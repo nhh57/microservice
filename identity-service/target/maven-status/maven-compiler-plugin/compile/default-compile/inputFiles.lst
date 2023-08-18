@@ -1,0 +1,12 @@
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\dto\request\UsersRequest.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\service\UsersService.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\IdentityServiceApplication.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\config\CustomUserDetailsService.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\config\CustomUserDetails.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\service\JwtService.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\config\AuthConfig.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\dto\response\BaseResponse.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\repository\UsersRepository.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\controller\UsersController.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\dto\response\UsersResponse.java
+D:\NGUYENHOANGHAI\Java-Demo\microservice\identity-service\src\main\java\com\example\identityservice\model\Users.java

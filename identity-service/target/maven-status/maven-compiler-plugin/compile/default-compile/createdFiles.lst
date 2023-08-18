@@ -1,0 +1,13 @@
+com\example\identityservice\config\AuthConfig.class
+com\example\identityservice\model\Users$UsersBuilder.class
+com\example\identityservice\repository\UsersRepository.class
+com\example\identityservice\controller\UsersController.class
+com\example\identityservice\dto\response\BaseResponse.class
+com\example\identityservice\model\Users.class
+com\example\identityservice\dto\request\UsersRequest.class
+com\example\identityservice\dto\response\UsersResponse.class
+com\example\identityservice\config\CustomUserDetailsService.class
+com\example\identityservice\service\JwtService.class
+com\example\identityservice\IdentityServiceApplication.class
+com\example\identityservice\config\CustomUserDetails.class
+com\example\identityservice\service\UsersService.class

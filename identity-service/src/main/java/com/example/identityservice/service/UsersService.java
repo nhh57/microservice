@@ -22,6 +22,7 @@ public class UsersService {
     public String saveUsers(UsersRequest usersRequest) {
         Users users = Users.builder()
                 .name(usersRequest.getName())
+                .email(usersRequest.getEmail())
                 .password(passwordEncoder.encode(usersRequest.getPassword()))
                 .build();
         usersRepo.save(users);

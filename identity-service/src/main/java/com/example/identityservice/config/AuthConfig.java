@@ -3,6 +3,7 @@ package com.example.identityservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -29,9 +30,9 @@ public class AuthConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(new AntPathRequestMatcher("/auth/register")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/auth/token")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/auth/validate")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/api/auth/token")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/api/auth/register")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/api/auth/validate")).permitAll()
                 .and().build();
     }
 

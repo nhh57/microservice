@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
+
     @Autowired
     private  UsersRepository usersRepository;
     @Override

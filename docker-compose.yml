@@ -21,6 +21,8 @@ services:
   discovery-service:
     image: nhh0507/discovery-service:v1.0.0
     container_name: discovery-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     ports:
       - "8761:8761"
     networks:
@@ -30,6 +32,9 @@ services:
   gateway-service:
     image: nhh0507/gateway-service:v1.0.0
     container_name: gateway-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka_client_service-url_defaultZone=http://discovery-service:8761/eureka
     ports:
       - "9004:9004"
     networks:
@@ -41,6 +46,10 @@ services:
   identity-service:
     image: nhh0507/identity-service:v1.0.0
     container_name: identity-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka_client_service-url_defaultZone=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-microservice:3306/testdata
     ports:
       - "9006:9006"
     networks:
@@ -54,6 +63,10 @@ services:
   inventory-service:
     image: nhh0507/inventory-service:v1.0.0
     container_name: inventory-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka_client_service-url_defaultZone=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-microservice:3306/testdata
     ports:
       - "9003:9003"
     networks:
@@ -67,6 +80,10 @@ services:
   product-service:
     image: nhh0507/product-service:v1.0.0
     container_name: product-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka_client_service-url_defaultZone=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-microservice:3306/testdata
     ports:
       - "9001:9001"
     networks:
@@ -80,6 +97,10 @@ services:
   order-service:
     image: nhh0507/order-service:v1.0.0
     container_name: order-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka_client_service-url_defaultZone=http://discovery-service:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-microservice:3306/testdata
     ports:
       - "9002:9002"
     networks:
@@ -93,7 +114,3 @@ services:
 networks:
   backend:
     name: springboot-app-network
-
-## create volumes
-volumes:
-  mysql-springboot-data:
