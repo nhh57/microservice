@@ -1,9 +1,0 @@
-com/example/inventoryservice/controller/InventoryController.class
-com/example/inventoryservice/repository/InventoryRepository.class
-com/example/inventoryservice/model/Inventory.class
-com/example/inventoryservice/service/InventoryService.class
-com/example/inventoryservice/dto/response/InventoryResponse$InventoryResponseBuilder.class
-com/example/inventoryservice/InventoryServiceApplication.class
-com/example/inventoryservice/dto/response/BaseResponse.class
-com/example/inventoryservice/dto/response/InventoryResponse.class
-com/example/inventoryservice/model/Inventory$InventoryBuilder.class

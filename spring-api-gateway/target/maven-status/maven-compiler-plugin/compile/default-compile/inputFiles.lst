@@ -1,5 +1,0 @@
-/Users/duyphuong/Desktop/HaiNH/Java/microservice/spring-api-gateway/src/main/java/com/example/springapigateway/SpringApiGatewayApplication.java
-/Users/duyphuong/Desktop/HaiNH/Java/microservice/spring-api-gateway/src/main/java/com/example/springapigateway/filter/AuthenticationFilter.java
-/Users/duyphuong/Desktop/HaiNH/Java/microservice/spring-api-gateway/src/main/java/com/example/springapigateway/filter/RouteValidator.java
-/Users/duyphuong/Desktop/HaiNH/Java/microservice/spring-api-gateway/src/main/java/com/example/springapigateway/utils/JwtUtil.java
-/Users/duyphuong/Desktop/HaiNH/Java/microservice/spring-api-gateway/src/main/java/com/example/springapigateway/Config/AppConfig.java
