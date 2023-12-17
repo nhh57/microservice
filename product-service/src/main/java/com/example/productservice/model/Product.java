@@ -11,12 +11,15 @@ import java.math.BigDecimal;
 @Setter
 @Builder
 @Table(name = "product", schema = "testdata", catalog = "" )
+@EntityListeners(ProductListener.class)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
+    @Column(name = "category_id")
+    private int categoryId;
     private String description;
     private BigDecimal price;
 
