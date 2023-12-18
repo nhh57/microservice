@@ -5,8 +5,9 @@ import com.example.productservice.dto.request.ProductRequest;
 import com.example.productservice.dto.response.BaseResponse;
 import com.example.productservice.dto.response.ProductResponse;
 import com.example.productservice.service.IProductRedisService;
-import com.example.productservice.service.ProductServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.productservice.service.IProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,10 +23,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
-@Slf4j
 public class ProductController {
-    private final ProductServiceImpl productSer;
+    private final IProductService productSer;
     private final IProductRedisService productRedisService;
+    private final Logger log = LoggerFactory.getLogger(ProductController.class);
 
     @RequestMapping(value = "/a", method = RequestMethod.POST, produces = {
             MediaType.APPLICATION_JSON_VALUE})
@@ -54,13 +55,14 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
     ) throws Exception {
+        log.info("com/example/productservice/controller/ProductController.java - getProducts - START ");
         BaseResponse baseResponse = new BaseResponse();
         int totalPages = 0;
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("id").ascending());
         log.info(String.format("keyword=%s, category_id= %d, page= %d, limit=%d", keyword, categoryId, page, limit));
         List<ProductResponse> productResponse = productRedisService.getAllProducts(keyword, categoryId, pageRequest);
-        if (productResponse == null) {
+        if (productResponse.size() <= 0) {
             Page<ProductResponse> productPage = productSer.getAllProducts(keyword, categoryId, pageRequest);
             totalPages = productPage.getTotalPages();
             productResponse = productPage.getContent();
@@ -70,6 +72,6 @@ public class ProductController {
                     pageRequest);
         }
         baseResponse.setData(productResponse);
-return new  ResponseEntity<BaseResponse>(baseResponse, HttpStatus.OK);
+        return new ResponseEntity<BaseResponse>(baseResponse, HttpStatus.OK);
     }
 }
