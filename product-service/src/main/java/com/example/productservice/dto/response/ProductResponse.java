@@ -28,4 +28,15 @@ public class ProductResponse {
                 .build();
         return productResponse;
     }
+
+    @Override
+    public String toString() {
+        return "ProductResponse{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", categoryId=" + categoryId +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

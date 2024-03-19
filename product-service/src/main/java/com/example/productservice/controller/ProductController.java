@@ -38,17 +38,17 @@ public class ProductController {
         return new ResponseEntity<BaseResponse>(response, HttpStatus.CREATED);
     }
 
-//    @RequestMapping(value = "", method = RequestMethod.GET, produces = {
-//            MediaType.APPLICATION_JSON_VALUE})
-//    public ResponseEntity<BaseResponse> getAllProduct() {
-//        log.info("START GETALLPRODUCT");
-//        BaseResponse response = new BaseResponse();
-//        response.setData(productSer.getAllProducts());
-//        log.info("END GETALLPRODUCT");
-//        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
-//    }
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = {
+            MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<BaseResponse> getAllProduct() {
+        log.info("START GETALLPRODUCT");
+        BaseResponse response = new BaseResponse();
+        response.setData(productSer.getAllProducts());
+        log.info("END GETALLPRODUCT");
+        return new ResponseEntity<BaseResponse>(response, HttpStatus.OK);
+    }
 
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/redis", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> getProducts(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
@@ -62,7 +62,8 @@ public class ProductController {
         PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("id").ascending());
         log.info(String.format("keyword=%s, category_id= %d, page= %d, limit=%d", keyword, categoryId, page, limit));
         List<ProductResponse> productResponse = productRedisService.getAllProducts(keyword, categoryId, pageRequest);
-        if (productResponse.size() <= 0) {
+        log.info("Product: "+productResponse);
+        if (productResponse == null) {
             Page<ProductResponse> productPage = productSer.getAllProducts(keyword, categoryId, pageRequest);
             totalPages = productPage.getTotalPages();
             productResponse = productPage.getContent();

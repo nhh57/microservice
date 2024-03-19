@@ -8,7 +8,7 @@ services:
       - "3306:3306"
     restart: always
     volumes:
-       - /home/hoanghai/Mysql/mysql8.0.33:/var/lib/mysql
+       - /Users/duyphuong/Desktop/HaiNH/database/mysql/mysql8.0.33:/var/lib/mysql
     networks:
       backend:
     environment:
@@ -25,7 +25,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - /home/hoanghai/Redis/redis-container:/data
+      - /Users/duyphuong/Desktop/HaiNH/redis:/data
     networks:
       backend:
 
