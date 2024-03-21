@@ -9,6 +9,7 @@ services:
     restart: always
     volumes:
        - /Users/duyphuong/Desktop/HaiNH/database/mysql/mysql8.0.33:/var/lib/mysql
+       - /Users/duyphuong/Desktop/HaiNH/Java/microservice/data:/docker-entrypoint-initdb.d
     networks:
       backend:
     environment:

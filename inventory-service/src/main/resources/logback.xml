@@ -7,16 +7,16 @@
         </layout>
     </appender>
 
-    <appender name="PRODUCTSERVICE"
+    <appender name="INVENTORY"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${catalina.base}/logs/Product-Service/Product.log</file>
+        <file>${catalina.base}/logs/Inventory-Service/Inventory.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d{dd/MM/yyyy HH:mm:ss SSS} [%thread] %-5level [%logger] %class{36} - %msg%n</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${catalina.base}/logs/Product-Service/Product-%d{DD-MM-YYYY}-%i.log.gz</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/Inventory-Service/Inventory-%d{DD-MM-YYYY}-%i.log.gz</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
@@ -26,7 +26,7 @@
 
     <root level="info">
         <appender-ref ref="STDOUT" />
-        <appender-ref ref="PRODUCTSERVICE" />
+        <appender-ref ref="INVENTORY" />
     </root>
 
 </configuration>

@@ -28,11 +28,11 @@ private final OrderService orderSer;
     @TimeLimiter(name = "inventory")
     @Retry(name = "inventory")
     public CompletableFuture<String> placeOrder(@RequestBody OrderRequest request) {
-        log.info("START CREATEPRODUCT");
+        log.info("START placeOrder");
         log.info("OrderRequest: "+request.getOrderLineItemDtoList());
         BaseResponse response = new BaseResponse();
         orderSer.placeOrder(request);
-        log.info("END CREATEPRODUCT");
+        log.info("END placeOrder");
         return CompletableFuture.supplyAsync(() -> orderSer.placeOrder(request));
     }
 
