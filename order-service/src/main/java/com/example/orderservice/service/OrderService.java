@@ -3,11 +3,15 @@ package com.example.orderservice.service;
 import com.example.orderservice.dto.request.OrderLineItemDto;
 import com.example.orderservice.dto.request.OrderRequest;
 import com.example.orderservice.dto.response.InventoryResponse;
+import com.example.orderservice.event.OrderPlacedEvent;
 import com.example.orderservice.model.Order;
 import com.example.orderservice.model.OrderLineItems;
 import com.example.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,6 +28,8 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderRepository orderRepo;
     private final WebClient.Builder webClient;
+    private final Tracer tracer;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     public String placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
@@ -43,22 +49,29 @@ public class OrderService {
 //        call inventory service, and place order if product is in
 //        stock
         log.info("skuCodes: "+skuCodes);
-        InventoryResponse[] inventoryResponses = webClient.build().get()
-                .uri("http://server-inventory:9003/api/inventory",
-                        uriBuilder -> uriBuilder.queryParam("skuCode",skuCodes).build())
-                .retrieve()
-                .bodyToMono(InventoryResponse[].class)
-                .block();
+        Span inventoryServiceLookup = tracer.nextSpan().name("InventoryServiceLookup");
+        try(Tracer.SpanInScope spanInScope = tracer.withSpan(inventoryServiceLookup.start())){
+            InventoryResponse[] inventoryResponses = webClient.build().get()
+                    .uri("http://server-inventory:9003/api/inventory",
+                            uriBuilder -> uriBuilder.queryParam("skuCode",skuCodes).build())
+                    .retrieve()
+                    .bodyToMono(InventoryResponse[].class)
+                    .block();
 
 //        log.info("inventoryResponsesArray: "+ Arrays.toString(inventoryResponsesArray));
-        boolean allProductsInStock = Arrays.stream(inventoryResponses).allMatch(InventoryResponse::isInStock);
+            boolean allProductsInStock = Arrays.stream(inventoryResponses).allMatch(InventoryResponse::isInStock);
 
-        if (allProductsInStock) {
-            orderRepo.save(order);
-            return "Order Placed Successfully";
-        } else {
-            throw new IllegalArgumentException("Product is not in stock, please try again later");
+            if (allProductsInStock) {
+                orderRepo.save(order);
+                kafkaTemplate.send("notificationTopic",new OrderPlacedEvent(order.getOrderNumber()));
+                return "Order Placed Successfully";
+            } else {
+                throw new IllegalArgumentException("Product is not in stock, please try again later");
+            }
+        }finally {
+            inventoryServiceLookup.end();
         }
+
 
     }
 
