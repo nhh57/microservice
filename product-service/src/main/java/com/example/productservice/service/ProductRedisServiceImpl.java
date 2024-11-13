@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -26,14 +27,12 @@ public class ProductRedisServiceImpl implements IProductRedisService {
         int pageNumber = pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
         Sort sort = pageRequest.getSort();
-//        String sortDirection = Objects.requireNonNull(sort.getOrderFor("id"))
-//                .getDirection() == Sort.Direction.ASC ? "asc" : "desc";
-        String sortDirection = sort.getOrderFor("id")
-                .getDirection() == Sort.Direction.ASC?"asc":"desc";
-        return String.format("all_products:%d:%d:%s", pageNumber, pageSize, sortDirection);
+        String sortDirection = Objects.requireNonNull(sort.getOrderFor("id"))
+                .getDirection() == Sort.Direction.ASC ? "asc" : "desc";
+        return String.format("all_products:%s:%d:%d:%d:%s", keyword,categoryId, pageNumber, pageSize, sortDirection);
     }
     /*
-    {
+    {x
         "all_products:1:10:asc":"list of products object"
     }
     */
@@ -47,17 +46,16 @@ public class ProductRedisServiceImpl implements IProductRedisService {
     public List<ProductResponse> getAllProducts(String keyword, int categoryId, PageRequest pageRequest) throws JsonProcessingException {
         String key = this.getKeyFrom(keyword, categoryId, pageRequest);
         String json = String.valueOf(redisTemplate.opsForValue().get(key));
-        List<ProductResponse> productResponses =
-                json != null ?
-                        redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {})
-                        : null;
-        return productResponses;
+        return json != null ?
+                redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {
+                })
+                : null;
     }
 
     @Override
     public void saveAllProducts(List<ProductResponse> productResponses, String keyword, int categoryId, PageRequest pageRequest) throws JsonProcessingException {
         String key = this.getKeyFrom(keyword, categoryId, pageRequest);
         String json = redisObjectMapper.writeValueAsString(productResponses);
-        redisTemplate.opsForValue().set(key,json);
+        redisTemplate.opsForValue().set(key, json);
     }
 }
