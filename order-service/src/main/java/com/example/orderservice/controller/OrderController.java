@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +29,6 @@ private final OrderService orderSer;
     public CompletableFuture<String> placeOrder(@RequestBody OrderRequest request) {
         log.info("START placeOrder");
         log.info("OrderRequest: "+request.getOrderLineItemDtoList());
-        BaseResponse response = new BaseResponse();
         orderSer.placeOrder(request);
         log.info("END placeOrder");
         return CompletableFuture.supplyAsync(() -> orderSer.placeOrder(request));

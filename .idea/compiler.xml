@@ -7,12 +7,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="inventory-service" />
+        <module name="spring-api-gateway" />
+        <module name="framework-mic" />
         <module name="product-service" />
         <module name="spring-discovery-service" />
-        <module name="inventory-service" />
         <module name="order-service" />
-        <module name="spring-api-gateway" />
         <module name="identity-service" />
+        <module name="notification-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -23,6 +25,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="framework-mic" options="-parameters" />
       <module name="identity-service" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
       <module name="microservice" options="" />

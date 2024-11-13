@@ -20,6 +20,7 @@
         <module>product-service</module>
         <module>order-service</module>
         <module>notification-service</module>
+        <module>framework-mic</module>
     </modules>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

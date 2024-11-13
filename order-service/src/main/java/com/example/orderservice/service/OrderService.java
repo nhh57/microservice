@@ -9,9 +9,10 @@ import com.example.orderservice.model.OrderLineItems;
 import com.example.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -29,7 +30,11 @@ public class OrderService {
     private final OrderRepository orderRepo;
     private final WebClient.Builder webClient;
     private final Tracer tracer;
-    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
+    private final RabbitTemplate rabbitTemplate;
+    @Value("${rabbitmq.exchange.name}")
+    private String exchangeName;
+    @Value("${rabbitmq.binding.noti.order.routing.key}")
+    private String routingKey;
 
     public String placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
@@ -44,16 +49,16 @@ public class OrderService {
 
         List<String> skuCodes = order.getOrderLineItemsList()
                 .stream()
-                        .map(OrderLineItems::getSkuCode)
+                .map(OrderLineItems::getSkuCode)
                 .collect(Collectors.toList());
 //        call inventory service, and place order if product is in
 //        stock
-        log.info("skuCodes: "+skuCodes);
+        log.info("skuCodes: " + skuCodes);
         Span inventoryServiceLookup = tracer.nextSpan().name("InventoryServiceLookup");
-        try(Tracer.SpanInScope spanInScope = tracer.withSpan(inventoryServiceLookup.start())){
+        try (Tracer.SpanInScope spanInScope = tracer.withSpan(inventoryServiceLookup.start())) {
             InventoryResponse[] inventoryResponses = webClient.build().get()
                     .uri("http://server-inventory:9003/api/inventory",
-                            uriBuilder -> uriBuilder.queryParam("skuCode",skuCodes).build())
+                            uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                     .retrieve()
                     .bodyToMono(InventoryResponse[].class)
                     .block();
@@ -62,13 +67,15 @@ public class OrderService {
             boolean allProductsInStock = Arrays.stream(inventoryResponses).allMatch(InventoryResponse::isInStock);
 
             if (allProductsInStock) {
+
                 orderRepo.save(order);
-                kafkaTemplate.send("notificationTopic",new OrderPlacedEvent(order.getOrderNumber()));
+//                kafkaTemplate.send("notificationTopic",new OrderPlacedEvent(order.getOrderNumber()));
+                rabbitTemplate.convertAndSend(exchangeName, routingKey, order.getOrderNumber());
                 return "Order Placed Successfully";
             } else {
                 throw new IllegalArgumentException("Product is not in stock, please try again later");
             }
-        }finally {
+        } finally {
             inventoryServiceLookup.end();
         }
 
