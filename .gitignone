@@ -41,3 +41,10 @@ mongo-data
 /postgres-order/
 /grafana/
 
+/identity-service/target/
+/inventory-service/target/
+/notification-service/target/
+/order-service/target/
+/product-service/target/
+/spring-api-gateway/target/
+/spring-discovery-service/target/

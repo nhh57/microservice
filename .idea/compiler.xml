@@ -26,6 +26,7 @@
       <module name="identity-service" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
       <module name="microservice" options="" />
+      <module name="notification-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
       <module name="server-instance-1" options="-parameters" />
