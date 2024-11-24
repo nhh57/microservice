@@ -9,7 +9,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="inventory-service" />
         <module name="spring-api-gateway" />
-        <module name="framework-mic" />
         <module name="product-service" />
         <module name="spring-discovery-service" />
         <module name="order-service" />
@@ -18,6 +17,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="framework-mic" target="21" />
       <module name="server-instance-1" target="11" />
       <module name="server-instance-2" target="11" />
       <module name="spring-discovery-server" target="11" />

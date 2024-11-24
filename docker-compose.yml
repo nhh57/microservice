@@ -8,8 +8,9 @@ services:
       - "3306:3306"
     restart: always
     volumes:
-       - /Users/duyphuong/Desktop/HaiNH/database/mysql/mysql8.0.33:/var/lib/mysql
-       - /Users/duyphuong/Desktop/HaiNH/Java/microservice/data:/docker-entrypoint-initdb.d
+#       - /Users/duyphuong/Desktop/HaiNH/database/mysql/mysql8.0.33:/var/lib/mysql
+#       - /Users/duyphuong/Desktop/HaiNH/Java/microservice/data:/docker-entrypoint-initdb.d
+      - /home/hoanghai/Project/Docker/database/mysql/mysql8.0.33:/var/lib/mysql
     networks:
       backend:
     environment:
@@ -62,17 +63,18 @@ services:
     networks:
       backend:
 
-#
-#  ## discovery-service config
-#  discovery-service:
-#    image: nhh0507/discovery-service:v1.0.0
-#    container_name: discovery-service
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    ports:
-#      - "8761:8761"
-#    networks:
-#      backend:
+
+  ## discovery-service config
+  discovery-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nhh0507/discovery-service:v1.0.0
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      backend:
 #
 ### gateway-service config
 #  gateway-service:
