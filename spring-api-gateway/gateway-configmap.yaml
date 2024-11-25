@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+data:
+  application.properties: |
+    server.port=9004
+    spring.application.name=api-gateway
+    eureka.client.service-url.defaultZone = http://192.168.49.2:30007/eureka
+    ##
+    logging.level.root=INFO
+    logging.level.org.springframework.cloud.gateway.route.RouteDefinitionLocator = INFO
+    logging.level.org.springframework.cloud.gateway = TRACE
+    
+    ## Order Service Route
+    spring.cloud.gateway.routes[0].id=order-service
+    spring.cloud.gateway.routes[0].uri=lb://order-service
+    spring.cloud.gateway.routes[0].predicates[0]=Path=/api/order/**
+    spring.cloud.gateway.routes[0].filters= AuthenticationFilter
+    ## Product Service Route
+    spring.cloud.gateway.routes[1].id=product-service
+    spring.cloud.gateway.routes[1].uri=lb://product-service
+    spring.cloud.gateway.routes[1].predicates[0]=Path=/api/product/**
+    spring.cloud.gateway.routes[1].filters= AuthenticationFilter
+    # Discover Service Route
+    spring.cloud.gateway.routes[2].id=discovery-service
+    spring.cloud.gateway.routes[2].uri=http://192.168.49.2:30007/eureka
+    spring.cloud.gateway.routes[2].predicates[0]=Path=/eureka/web
+    spring.cloud.gateway.routes[2].filters[0]=SetPath=/
+    
+    
+    ## Discover Service Static Resources Route
+    spring.cloud.gateway.routes[3].id=discovery-service-static
+    spring.cloud.gateway.routes[3].uri=http://192.168.49.2:30007
+    spring.cloud.gateway.routes[3].predicates[0]=Path=/eureka/**
+    
+    
+    ## Identity Service Route
+    spring.cloud.gateway.routes[4].id=identity-service
+    spring.cloud.gateway.routes[4].uri=lb://identity-service
+    spring.cloud.gateway.routes[4].predicates[0]=Path=/api/auth/**
+    
+    ## Identity Service Route
+    spring.cloud.gateway.routes[5].id=inventory-service
+    spring.cloud.gateway.routes[5].uri=lb://inventory-service
+    spring.cloud.gateway.routes[5].predicates[0]=Path=/api/auth/**
+    
+    spring.zipkin.base-url=http://192.168.49.4:9411
+    spring.sleuth.sampler.probability=1.0

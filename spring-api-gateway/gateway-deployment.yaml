@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: discovery-deployment
+  name: gateway-deployment
   labels:
-    app: discovery-service
+    app: gateway-service
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: discovery-service
+      app: gateway-service
   template:
     metadata:
       labels:
-        app: discovery-service
+        app: gateway-service
     spec:
       containers:
-        - name: discovery-service
-          image: nhh0507/discovery-service:v1.0.0
+        - name: gateway-service
+          image: nhh0507/gateway-service:v1.0.0
           ports:
-            - containerPort: 8761
+            - containerPort: 9004
           volumeMounts:
             - name: config-volume
               mountPath: /config/application.properties
@@ -27,5 +27,4 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: discovery-config
-
+            name: gateway-config
