@@ -5,7 +5,7 @@ metadata:
   labels:
     app: discovery-service
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: discovery-service
@@ -24,6 +24,13 @@ spec:
               mountPath: /config/application.properties
               subPath: application.properties
               readOnly: true
+          resources:
+            requests:
+              memory: "256Mi"  # Yêu cầu tối thiểu
+              cpu: "500m"
+            limits:
+              memory: "512Mi"  # Giới hạn tối đa
+              cpu: "1"
       volumes:
         - name: config-volume
           configMap:
