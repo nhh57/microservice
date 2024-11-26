@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment
+  labels:
+    app: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: nhh0507/order-service:v1.0.0
+          ports:
+            - containerPort: 9002
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config/application.properties
+              subPath: application.properties
+              readOnly: true
+          resources:
+            requests:
+              memory: "256Mi"  # Yêu cầu tối thiểu
+              cpu: "500m"
+            limits:
+              memory: "512Mi"  # Giới hạn tối đa
+              cpu: "1"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: order-config

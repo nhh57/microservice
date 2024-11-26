@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-service-svc
+spec:
+  selector:
+    app: inventory-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9003
+      nodePort: 30003  # Đây là NodePort
+  type: NodePort

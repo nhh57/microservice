@@ -37,8 +37,8 @@ services:
       - "3306:3306"
     restart: always
     volumes:
-       - /Users/duyphuong/Desktop/HaiNH/database/mysql/mysql8.0.33:/var/lib/mysql
-       - /Users/duyphuong/Desktop/HaiNH/Java/microservice/data:/docker-entrypoint-initdb.d
+      - /Users/duyphuong/Desktop/HaiNH/database/mysql/mysql8.0.33:/var/lib/mysql
+      - /Users/duyphuong/Desktop/HaiNH/Java/microservice/data:/docker-entrypoint-initdb.d
     networks:
       - minikube
     environment:
@@ -46,6 +46,18 @@ services:
       MYSQL_PASSWORD: Admin123
       MYSQL_ROOT_PASSWORD: Admin123
       MYSQL_DATABASE: testdata
+
+
+  rabbitmq-service:
+    image: rabbitmq:3.10.5-management
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    restart: always
+    networks:
+      - minikube
+
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
