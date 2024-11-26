@@ -4,3 +4,15 @@
 
 
 docker run --rm -it --name mysql-container -p 3306:3306 --network todo-app-network --network-alias todo-app-network-alias -e MYSQL_USER=hainh -e MYSQL_PASSWORD=Admin123 -e MYSQL_ROOT_PASSWORD=Admin123 -e MYSQL_DATABASE=testdata -v D:/NGUYENHOANGHAI/Docker/mysql/mysql_8.0.33:/var/lib/mysql mysql:8.0.33
+
+
+cd spring-discovery-service;docker rmi -f nhh0507/discovery-service:v1.0.0;docker build --no-cache -t nhh0507/discovery-service:v1.0.0 .;kubectl apply -f discovery-configmap.yaml;kubectl apply -f discovery-service.yaml;kubectl apply -f discovery-deployment.yaml
+
+
+cd spring-api-gateway;docker rmi -f nhh0507/gateway-service:v1.0.0;docker build --no-cache -t nhh0507/gateway-service:v1.0.0 .;kubectl apply -f gateway-configmap.yaml;kubectl apply -f gateway-service.yaml;kubectl apply -f gateway-deployment.yaml
+
+
+
+cd product-service;docker rmi -f nhh0507/product-service:v1.0.0;docker build --no-cache -t nhh0507/product-service:v1.0.0 .;kubectl apply -f product-configmap.yaml;kubectl apply -f product-service.yaml;kubectl apply -f product-deployment.yaml
+
+
