@@ -3,6 +3,7 @@ package com.example.orderservice.service;
 import com.example.orderservice.dto.request.OrderLineItemDto;
 import com.example.orderservice.dto.request.OrderRequest;
 import com.example.orderservice.dto.response.InventoryResponse;
+import com.example.orderservice.dto.response.ProductResponse;
 import com.example.orderservice.event.OrderPlacedEvent;
 import com.example.orderservice.model.Order;
 import com.example.orderservice.model.OrderLineItems;
@@ -16,6 +17,7 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -57,7 +59,7 @@ public class OrderService {
         Span inventoryServiceLookup = tracer.nextSpan().name("InventoryServiceLookup");
         try (Tracer.SpanInScope spanInScope = tracer.withSpan(inventoryServiceLookup.start())) {
             InventoryResponse[] inventoryResponses = webClient.build().get()
-                    .uri("http://server-inventory:9003/api/inventory",
+                    .uri("http://inventory-server:9003/api/inventory",
                             uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                     .retrieve()
                     .bodyToMono(InventoryResponse[].class)
@@ -70,7 +72,10 @@ public class OrderService {
 
                 orderRepo.save(order);
 //                kafkaTemplate.send("notificationTopic",new OrderPlacedEvent(order.getOrderNumber()));
-                rabbitTemplate.convertAndSend(exchangeName, routingKey, order.getOrderNumber());
+//                rabbitTemplate.convertAndSend(exchangeName, routingKey, true); //test truoc
+                webClient.build().post().uri("http://product-service:9001/api/product/remove-cache").exchangeToMono(clientResponse -> Mono.empty())
+                        .doOnError(e -> log.error("Error occurred during fire-and-forget: ", e))
+                        .subscribe();
                 return "Order Placed Successfully";
             } else {
                 throw new IllegalArgumentException("Product is not in stock, please try again later");

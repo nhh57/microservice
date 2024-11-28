@@ -50,7 +50,7 @@ public class ProductController {
     @RequestMapping(value = "/redis", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<BaseResponse> getProducts(
             @RequestParam(defaultValue = "") String keyword,
-            @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
+            @RequestParam(defaultValue = "0", name = "") int categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
     ) throws Exception {
@@ -61,7 +61,7 @@ public class ProductController {
         PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("id").ascending());
         log.info(String.format("keyword=%s, category_id= %d, page= %d, limit=%d", keyword, categoryId, page, limit));
         List<ProductResponse> productResponse = productRedisService.getAllProducts(keyword, categoryId, pageRequest);
-        log.info("Product: "+productResponse);
+        log.info("Product: " + productResponse);
         if (productResponse == null) {
             Page<ProductResponse> productPage = productSer.getAllProducts(keyword, categoryId, pageRequest);
             totalPages = productPage.getTotalPages();
@@ -73,5 +73,12 @@ public class ProductController {
         }
         baseResponse.setData(productResponse);
         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/remove-cache")
+    public void removeCache() {
+        log.info("START REMOVEPRODUCT");
+        productRedisService.clear();
     }
 }
