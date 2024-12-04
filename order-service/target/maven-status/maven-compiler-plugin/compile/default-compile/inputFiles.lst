@@ -1,0 +1,14 @@
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\repository\OrderRepository.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\dto\request\OrderLineItemDto.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\event\OrderPlacedEvent.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\dto\response\InventoryResponse.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\service\OrderService.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\config\RabbitMQConfig.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\model\Order.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\model\OrderLineItems.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\controller\OrderController.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\dto\request\OrderRequest.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\dto\response\BaseResponse.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\dto\response\OrderResponse.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\OrderServiceApplication.java
+D:\Java\microservice\order-service\src\main\java\com\example\orderservice\config\WebClientConfig.java

@@ -10,8 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-@Table(name = "product", schema = "testdata", catalog = "" )
-@EntityListeners(ProductListener.class)
+@Table(name = "product", schema = "testdata")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +21,5 @@ public class Product {
     private int categoryId;
     private String description;
     private BigDecimal price;
-
 
 }

@@ -51,7 +51,7 @@ public class ProductController {
     public ResponseEntity<BaseResponse> getProducts(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0", name = "") int categoryId,
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit
     ) throws Exception {
         log.info("com/example/productservice/controller/ProductController.java - getProducts - START ");
