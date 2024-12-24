@@ -14,3 +14,9 @@ cd product-service;docker rmi -f nhh0507/product-service:v1.0.0;docker build --n
 
 cd identity-service;docker rmi -f nhh0507/identity-service:v1.0.0;docker build --no-cache -t nhh0507/identity-service:v1.0.0 .;kubectl apply -f identity-configmap.yaml;kubectl apply -f identity-service.yaml;kubectl apply -f identity-deployment.yaml
 
+
+# export sql
+docker exec -i mysql-microservice mysqldump -u root -pAdmin123 --databases testdata --add-drop-database --add-drop-table --add-drop-trigger --add-locks | tee environment/mysql/init/init.sql
+
+
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ -d @environment/register-mysql.json

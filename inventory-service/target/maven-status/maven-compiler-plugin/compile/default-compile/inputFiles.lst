@@ -1,7 +1,7 @@
-D:\Java\microservice\inventory-service\src\main\java\com\example\inventoryservice\dto\response\InventoryResponse.java
-D:\Java\microservice\inventory-service\src\main\java\com\example\inventoryservice\repository\InventoryRepository.java
-D:\Java\microservice\inventory-service\src\main\java\com\example\inventoryservice\dto\response\BaseResponse.java
-D:\Java\microservice\inventory-service\src\main\java\com\example\inventoryservice\service\InventoryService.java
-D:\Java\microservice\inventory-service\src\main\java\com\example\inventoryservice\InventoryServiceApplication.java
-D:\Java\microservice\inventory-service\src\main\java\com\example\inventoryservice\controller\InventoryController.java
-D:\Java\microservice\inventory-service\src\main\java\com\example\inventoryservice\model\Inventory.java
+/home/hoanghai/Project/Java/microservice/inventory-service/src/main/java/com/example/inventoryservice/model/Inventory.java
+/home/hoanghai/Project/Java/microservice/inventory-service/src/main/java/com/example/inventoryservice/dto/response/BaseResponse.java
+/home/hoanghai/Project/Java/microservice/inventory-service/src/main/java/com/example/inventoryservice/service/InventoryService.java
+/home/hoanghai/Project/Java/microservice/inventory-service/src/main/java/com/example/inventoryservice/controller/InventoryController.java
+/home/hoanghai/Project/Java/microservice/inventory-service/src/main/java/com/example/inventoryservice/dto/response/InventoryResponse.java
+/home/hoanghai/Project/Java/microservice/inventory-service/src/main/java/com/example/inventoryservice/InventoryServiceApplication.java
+/home/hoanghai/Project/Java/microservice/inventory-service/src/main/java/com/example/inventoryservice/repository/InventoryRepository.java

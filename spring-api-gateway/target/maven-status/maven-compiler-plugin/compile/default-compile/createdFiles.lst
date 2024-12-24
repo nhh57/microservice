@@ -1,6 +1,6 @@
-com\example\springapigateway\filter\AuthenticationFilter$Config.class
-com\example\springapigateway\filter\AuthenticationFilter.class
-com\example\springapigateway\filter\RouteValidator.class
-com\example\springapigateway\Config\AppConfig.class
-com\example\springapigateway\SpringApiGatewayApplication.class
-com\example\springapigateway\utils\JwtUtil.class
+com/example/springapigateway/SpringApiGatewayApplication.class
+com/example/springapigateway/filter/AuthenticationFilter$Config.class
+com/example/springapigateway/filter/RouteValidator.class
+com/example/springapigateway/filter/AuthenticationFilter.class
+com/example/springapigateway/utils/JwtUtil.class
+com/example/springapigateway/Config/AppConfig.class
