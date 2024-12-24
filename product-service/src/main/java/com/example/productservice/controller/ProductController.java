@@ -3,7 +3,7 @@ package com.example.productservice.controller;
 
 import com.example.productservice.dto.request.ProductRequest;
 import com.example.productservice.dto.response.BaseResponse;
-import com.example.productservice.dto.response.ProductResponse;
+import com.example.productservice.dto.response.TicketDetailResponse;
 import com.example.productservice.service.IProductRedisService;
 import com.example.productservice.service.IProductService;
 import lombok.RequiredArgsConstructor;
@@ -27,15 +27,15 @@ public class ProductController {
     private final IProductRedisService productRedisService;
     private final Logger log = LoggerFactory.getLogger(ProductController.class);
 
-    @RequestMapping(value = "/a", method = RequestMethod.POST, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<BaseResponse> createProduct(@RequestBody ProductRequest request) {
-        log.info("START CREATEPRODUCT");
-        BaseResponse response = new BaseResponse();
-        productSer.createProduct(request);
-        log.info("END CREATEPRODUCT");
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
+//    @RequestMapping(value = "/a", method = RequestMethod.POST, produces = {
+//            MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<BaseResponse> createProduct(@RequestBody ProductRequest request) {
+//        log.info("START CREATEPRODUCT");
+//        BaseResponse response = new BaseResponse();
+//        productSer.createProduct(request);
+//        log.info("END CREATEPRODUCT");
+//        return new ResponseEntity<>(response, HttpStatus.CREATED);
+//    }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {
             MediaType.APPLICATION_JSON_VALUE})
@@ -60,18 +60,18 @@ public class ProductController {
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("id").ascending());
         log.info(String.format("keyword=%s, category_id= %d, page= %d, limit=%d", keyword, categoryId, page, limit));
-        List<ProductResponse> productResponse = productRedisService.getAllProducts(keyword, categoryId, pageRequest);
-        log.info("Product: " + productResponse);
-        if (productResponse == null) {
-            Page<ProductResponse> productPage = productSer.getAllProducts(keyword, categoryId, pageRequest);
+        List<TicketDetailResponse> ticketDetailResponse = productRedisService.getAllProducts(keyword, categoryId, pageRequest);
+        log.info("Product: " + ticketDetailResponse);
+        if (ticketDetailResponse == null) {
+            Page<TicketDetailResponse> productPage = productSer.getAllProducts(keyword, categoryId, pageRequest);
             totalPages = productPage.getTotalPages();
-            productResponse = productPage.getContent();
-            productRedisService.saveAllProducts(productResponse,
+            ticketDetailResponse = productPage.getContent();
+            productRedisService.saveAllProducts(ticketDetailResponse,
                     keyword,
                     categoryId,
                     pageRequest);
         }
-        baseResponse.setData(productResponse);
+        baseResponse.setData(ticketDetailResponse);
         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
     }
 

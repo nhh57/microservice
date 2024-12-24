@@ -1,6 +1,6 @@
 package com.example.productservice.service;
 
-import com.example.productservice.dto.response.ProductResponse;
+import com.example.productservice.dto.response.TicketDetailResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,19 +43,19 @@ public class ProductRedisServiceImpl implements IProductRedisService {
     }
 
     @Override
-    public List<ProductResponse> getAllProducts(String keyword, int categoryId, PageRequest pageRequest) throws JsonProcessingException {
+    public List<TicketDetailResponse> getAllProducts(String keyword, int categoryId, PageRequest pageRequest) throws JsonProcessingException {
         String key = this.getKeyFrom(keyword, categoryId, pageRequest);
         String json = String.valueOf(redisTemplate.opsForValue().get(key));
         return json != null ?
-                redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {
+                redisObjectMapper.readValue(json, new TypeReference<List<TicketDetailResponse>>() {
                 })
                 : null;
     }
 
     @Override
-    public void saveAllProducts(List<ProductResponse> productResponses, String keyword, int categoryId, PageRequest pageRequest) throws JsonProcessingException {
+    public void saveAllProducts(List<TicketDetailResponse> ticketDetailRespons, String keyword, int categoryId, PageRequest pageRequest) throws JsonProcessingException {
         String key = this.getKeyFrom(keyword, categoryId, pageRequest);
-        String json = redisObjectMapper.writeValueAsString(productResponses);
+        String json = redisObjectMapper.writeValueAsString(ticketDetailRespons);
         redisTemplate.opsForValue().set(key, json);
     }
 }

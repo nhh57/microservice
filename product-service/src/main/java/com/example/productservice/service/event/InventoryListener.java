@@ -34,7 +34,7 @@ public class InventoryListener {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

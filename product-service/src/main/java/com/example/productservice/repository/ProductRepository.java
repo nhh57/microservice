@@ -1,14 +1,19 @@
 package com.example.productservice.repository;
 
-import com.example.productservice.dto.response.ProductResponse;
-import com.example.productservice.model.Product;
+import com.example.productservice.model.TicketDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ProductRepository extends JpaRepository<Product,Long> {
+public interface ProductRepository extends JpaRepository<TicketDetail,Long> {
 
-    @Query(value = "SELECT p.id, p.name, p.category_id, p.description,p.price FROM product p WHERE ((?1 <> '' AND (p.name LIKE CONCAT('%',?1,'%') OR p.description LIKE CONCAT('%',?1,'%')  )) OR ?1 = '') AND (p.category_id >= 0 AND p.category_id = ?2) OR (?2 < 0)", nativeQuery = true)
-    Page<Product> getAllProducts(String keyword, int categoryId, Pageable pageable) throws Exception;
+    @Query(value = "SELECT t.id, t.name, t.description, t.stock_initial, t.stock_available, t.is_stock_prepared, t.price_original, t.price_flash, t.sale_start_time, t.sale_end_time, t.status, t.activity_id, t.updated_at, t.created_at " +
+            "FROM ticket_item t " +
+            "WHERE ((?1 <> '' AND (t.name LIKE CONCAT('%', ?1, '%') OR t.description LIKE CONCAT('%', ?1, '%'))) OR ?1 = '')", nativeQuery = true)
+    Page<TicketDetail> getAllProducts(String keyword, Pageable pageable);
+
+
+
+
 }
