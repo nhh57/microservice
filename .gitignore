@@ -51,3 +51,4 @@ mongo-data
 /spring-api-gateway/target/
 /spring-discovery-service/target/
 /environment/data/
+/.idea/

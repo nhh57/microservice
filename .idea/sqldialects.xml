@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/data/order.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/data/order_order_line_items_list.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/data/product.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/data/t_inventory.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/data/t_order_line_items.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/data/users.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/environment/mysql/init/init.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/environment/mysql/init/initv2.sql" dialect="MySQL" />
   </component>
 </project>

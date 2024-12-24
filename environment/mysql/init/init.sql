@@ -34,7 +34,7 @@ DROP TABLE IF EXISTS `order`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `order_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `order_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -88,12 +88,12 @@ CREATE TABLE `payment` (
   `order_id` bigint NOT NULL,
   `amount` decimal(19,2) NOT NULL,
   `payment_date` datetime DEFAULT NULL,
-  `payment_method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `transaction_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `saga_step` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payment_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `transaction_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `saga_step` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `retry_count` int DEFAULT '0',
-  `last_error` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_error` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_order_payment` (`order_id`),
   CONSTRAINT `FK_order_payment` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`)
@@ -111,58 +111,6 @@ INSERT INTO `payment` VALUES (1,1,100000.00,NULL,'Credit Card','PENDING',NULL,'I
 UNLOCK TABLES;
 
 --
--- Table structure for table `product`
---
-
-DROP TABLE IF EXISTS `product`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `product` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `category_id` int DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `price` decimal(19,2) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product`
---
-
-LOCK TABLES `product` WRITE;
-/*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,1,'iPhone 10','iPhone-10',100000.00),(2,2,'iPhone 12','iPhone-12',100000.00),(3,3,'iPhone 14','iPhone-14',120000.00),(4,4,'iPhone 15','iPhone-15',140000.00);
-/*!40000 ALTER TABLE `product` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `t_inventory`
---
-
-DROP TABLE IF EXISTS `t_inventory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `t_inventory` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `quantity` int DEFAULT NULL,
-  `sku_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_inventory`
---
-
-LOCK TABLES `t_inventory` WRITE;
-/*!40000 ALTER TABLE `t_inventory` DISABLE KEYS */;
-INSERT INTO `t_inventory` VALUES (1,3,'iPhone-10'),(2,3,'iPhone-12'),(3,6,'iPhone-14'),(4,7,'iPhone-15');
-/*!40000 ALTER TABLE `t_inventory` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `t_order_line-items`
 --
 
@@ -170,12 +118,20 @@ DROP TABLE IF EXISTS `t_order_line-items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `t_order_line-items` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `price` decimal(19,2) DEFAULT NULL,
-  `quantity` int DEFAULT NULL,
-  `sku_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
+  `order_id` bigint NOT NULL COMMENT 'Reference to order table',
+  `ticket_item_id` bigint NOT NULL COMMENT 'Reference to ticket item',
+  `quantity` int NOT NULL COMMENT 'Quantity of tickets ordered',
+  `price` bigint NOT NULL COMMENT 'Price of the ticket ordered',
+  `total` bigint NOT NULL COMMENT 'Total amount for the line item',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Created timestamp',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated timestamp',
+  PRIMARY KEY (`id`),
+  KEY `idx_ticket_item_id` (`ticket_item_id`),
+  KEY `idx_order_id` (`order_id`),
+  CONSTRAINT `FK_order_line_item_order` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`),
+  CONSTRAINT `FK_ticket_item_line_item` FOREIGN KEY (`ticket_item_id`) REFERENCES `ticket_item` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table for order line items';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,33 +140,80 @@ CREATE TABLE `t_order_line-items` (
 
 LOCK TABLES `t_order_line-items` WRITE;
 /*!40000 ALTER TABLE `t_order_line-items` DISABLE KEYS */;
-INSERT INTO `t_order_line-items` VALUES (1,1200.00,1,'iphone_13'),(2,1200.00,1,'iphone_13'),(3,1200.00,1,'iPhone-12'),(4,1200.00,1,'iPhone-12');
+INSERT INTO `t_order_line-items` VALUES (5,1,1,1,100000,200000,'2024-12-24 22:26:17','2024-12-24 22:26:19'),(6,2,2,2,200000,200000,'2024-12-24 22:26:17','2024-12-24 22:26:19'),(7,3,3,3,300000,900000,'2024-12-24 22:26:17','2024-12-24 22:26:19'),(8,4,4,4,200000,200000,'2024-12-24 22:26:17','2024-12-24 22:26:19');
 /*!40000 ALTER TABLE `t_order_line-items` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `users`
+-- Table structure for table `ticket`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `ticket`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `users` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `ticket` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ticket name',
+  `desc` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'ticket description',
+  `start_time` datetime NOT NULL COMMENT 'ticket sale start time',
+  `end_time` datetime NOT NULL COMMENT 'ticket sale end time',
+  `status` int NOT NULL DEFAULT '0' COMMENT 'ticket sale activity status',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last update time',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation time',
+  PRIMARY KEY (`id`),
+  KEY `idx_end_time` (`end_time`),
+  KEY `idx_start_time` (`start_time`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ticket table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `ticket`
 --
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+LOCK TABLES `ticket` WRITE;
+/*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
+INSERT INTO `ticket` VALUES (1,'Đợt Mở Bán Vé Ngày 12/12','Sự kiện mở bán vé đặc biệt cho ngày 12/12','2024-12-12 00:00:00','2024-12-12 23:59:59',1,'2024-12-24 15:08:11','2024-12-24 15:08:11'),(2,'Đợt Mở Bán Vé Ngày 01/01','Sự kiện mở bán vé cho ngày đầu năm mới 01/01','2025-01-01 00:00:00','2025-01-01 23:59:59',1,'2024-12-24 15:08:11','2024-12-24 15:08:11');
+/*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ticket_item`
+--
+
+DROP TABLE IF EXISTS `ticket_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ticket_item` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Ticket title',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Ticket description',
+  `stock_initial` int NOT NULL DEFAULT '0' COMMENT 'Initial stock quantity (e.g., 1000 tickets)',
+  `stock_available` int NOT NULL DEFAULT '0' COMMENT 'Current available stock (e.g., 900 tickets)',
+  `is_stock_prepared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Indicates if stock is pre-warmed (0/1)',
+  `price_original` bigint NOT NULL COMMENT 'Original ticket price',
+  `price_flash` bigint NOT NULL COMMENT 'Discounted price during flash sale',
+  `sale_start_time` datetime NOT NULL COMMENT 'Flash sale start time',
+  `sale_end_time` datetime NOT NULL COMMENT 'Flash sale end time',
+  `status` int NOT NULL DEFAULT '0' COMMENT 'Ticket status (e.g., active/inactive)',
+  `activity_id` bigint NOT NULL COMMENT 'ID of associated activity',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Timestamp of the last update',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation timestamp',
+  PRIMARY KEY (`id`),
+  KEY `idx_end_time` (`sale_end_time`),
+  KEY `idx_start_time` (`sale_start_time`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table for ticket details';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ticket_item`
+--
+
+LOCK TABLES `ticket_item` WRITE;
+/*!40000 ALTER TABLE `ticket_item` DISABLE KEYS */;
+INSERT INTO `ticket_item` VALUES (1,'Vé Sự Kiện 12/12 - Hạng Phổ Thông','Vé phổ thông cho sự kiện ngày 12/12',1000,1000,0,100000,10000,'2024-12-12 00:00:00','2024-12-12 23:59:59',1,1,'2024-12-24 15:08:11','2024-12-24 15:08:11'),(2,'Vé Sự Kiện 12/12 - Hạng VIP','Vé VIP cho sự kiện ngày 12/12',500,500,0,200000,15000,'2024-12-12 00:00:00','2024-12-12 23:59:59',1,1,'2024-12-24 15:08:11','2024-12-24 15:08:11'),(3,'Vé Sự Kiện 01/01 - Hạng Phổ Thông','Vé phổ thông cho sự kiện ngày 01/01',2000,2000,0,100000,10000,'2025-01-01 00:00:00','2025-01-01 23:59:59',1,2,'2024-12-24 15:08:11','2024-12-24 15:08:11'),(4,'Vé Sự Kiện 01/01 - Hạng VIP','Vé VIP cho sự kiện ngày 01/01',1000,1000,0,200000,15000,'2025-01-01 00:00:00','2025-01-01 23:59:59',1,2,'2024-12-24 15:08:11','2024-12-24 15:08:11');
+/*!40000 ALTER TABLE `ticket_item` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -222,4 +225,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-24 15:00:36
+-- Dump completed on 2024-12-24 15:27:04
